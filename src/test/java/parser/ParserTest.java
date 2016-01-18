@@ -1,13 +1,18 @@
 package parser;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.util.List;
 
-public class ParserTest {
+import org.apache.log4j.Logger;
+import org.junit.Before;
+import org.junit.Test;
 
+public class ParserTest {
+	
+	private static final Logger log = Logger.getLogger(ParserTest.class);
+	
     private Parser parser = new Parser();
 
     String diff = "0a1,6\n" +
@@ -43,38 +48,44 @@ public class ParserTest {
             "< tincidunt ut laoreet dolore magna\n" +
             "< aliquam erat volutpat.\n" +
             "< Ut wisi enim ad minim veniam.";
+    
+    @Before
+    public void setUp(){
+    	
+    	parser.parse(diff);
+    }
 
     @Test
     public void testGetHeaders() {
 
-        parser.parse(diff);
-
-//        List<AddedBlock> list = parser.getAddedBlockList();
-//        System.out.println(list);
-
-//        System.out.println(parser.getTextByHeader(new Header("0a1,6")));
-
-        // for (Header header : parser.getHeaders()){
-        //
-        // System.out.println(header);
-        //
-        // }
-        // assertEquals(4, parser.getHeaders().size());
-
+        List<Header> list = parser.getHeaders();
+        
+        assertNotNull(list);
+        assertEquals(5, list.size());
+        
+        
     }
-    //
-    // @Test
-    // public void testParse() {
-    //
-    // parser.parse(diff);
-    //
-    // for (Header header : parser.getHeaders()){
-    //
-    // System.out.println(header);
-    //
-    // }
-    // assertEquals(4, parser.getHeaders().size());
-    //
-    // }
+    
+    @Test
+    public void testDeletedBlocks() {
+    	
+    	List<DeletedBlock> list = parser.getDeletedBlockList();
+    	
+    	assertNotNull(list);
+    	assertEquals(1, list.size());
+    	
+    	
+    }
+
+    @Test
+    public void testChangedBlocks() {
+    	
+    	List<ChangedBlock> list = parser.getChangedBlockList();
+    	
+    	assertNotNull(list);
+    	assertEquals(2, list.size());
+    	
+    	
+    }
 
 }
