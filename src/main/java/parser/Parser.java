@@ -5,7 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+
 public class Parser {
+	
+	private static final Logger log = Logger.getLogger(Parser.class);
 
     private String text;
     private List<Header> headers = new ArrayList<>();
@@ -92,12 +96,8 @@ public class Parser {
                 }
             }
         }
-
-
-        headers = getHeaders(text);
-        getCleanText(text);
     }
-
+    
     public static boolean isInteger(String s) {
 
         try {
